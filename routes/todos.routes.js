@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import Todo from '../models/Todo.model.js'
+import isAuthenticatedMiddleware from '../middlewares/isAuthenticatedMiddleware.js'
 
 const todosRouter = Router()
 
@@ -14,8 +15,9 @@ todosRouter.get('/', async (req, res) => {
 })
 
 
-todosRouter.post('/', async (req, res) => {
+todosRouter.post('/', isAuthenticatedMiddleware, async (req, res) => {
     const payload = req.body
+
     try {
         const newTodo = await Todo.create(payload)
         return res.status(201).json(newTodo)      
